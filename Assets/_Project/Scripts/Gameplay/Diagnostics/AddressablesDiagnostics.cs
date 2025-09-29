@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 using UnityEngine;
@@ -17,7 +18,7 @@ public class AddressablesDiagnostics
     private Action<AsyncOperationHandle, Exception> _previousExceptionHandler;
 
     private readonly StringBuilder sharedStringBuilder = new StringBuilder();
-    private readonly System.Collections.Generic.Dictionary<string, Stopwatch> stopwatchesByKey =
+    private readonly Dictionary<string, Stopwatch> stopwatchesByKey =
         new System.Collections.Generic.Dictionary<string, Stopwatch>(256);
 
     private bool _enabled;
@@ -52,13 +53,15 @@ public class AddressablesDiagnostics
 
     public void NotifyAssetLoaded(string key)
     {
-        StopAndLogTimerIfAny(key, "Loaded");
+        StopAndLogTimerIfAny(key);
+        
         OnAssetLoaded?.Invoke(key);
     }
 
     public void NotifyAssetUnloaded(string key)
     {
-        StopAndLogTimerIfAny(key, "Unloaded");
+        StopAndLogTimerIfAny(key);
+        
         OnAssetUnloaded?.Invoke(key);
     }
 
@@ -76,7 +79,7 @@ public class AddressablesDiagnostics
         stopwatch.Restart();
     }
 
-    private void StopAndLogTimerIfAny(string key, string phase)
+    private void StopAndLogTimerIfAny(string key)
     {
         if (string.IsNullOrEmpty(key))
             return;
@@ -85,17 +88,12 @@ public class AddressablesDiagnostics
         {
             if (stopwatch.IsRunning)
                 stopwatch.Stop();
-
-            UnityEngine.Debug.Log($"[Addressables][{phase}] {key} in {stopwatch.ElapsedMilliseconds} ms");
         }
     }
 
     private Action<AsyncOperationHandle, Exception> WrapExceptionHandler(Action<AsyncOperationHandle, Exception> previousHandler)
     {
-        return (handle, exception) =>
-        {
-            previousHandler?.Invoke(handle, exception);
-        };
+        return (handle, exception) => { previousHandler?.Invoke(handle, exception); };
     }
 
     private void HandleDiagnosticContext(ResourceManager.DiagnosticEventContext context)
@@ -113,7 +111,5 @@ public class AddressablesDiagnostics
 
         if (context.Context != null)
             sharedStringBuilder.Append(" | Ctx: ").Append(context.Context);
-
-        UnityEngine.Debug.Log(sharedStringBuilder.ToString());
     }
 }

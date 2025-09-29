@@ -34,8 +34,10 @@ public class DropdownLoadedFlagPresenter
             return objectCollider.Contains(key);
 
         foreach (var item in collection)
+        {
             if (item == key)
                 return true;
+        }
 
         return false;
     }

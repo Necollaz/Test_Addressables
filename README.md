@@ -1,29 +1,10 @@
-# Addressables WebGL Demo (itch.io + Yandex Cloud)
+# Addressables WebGL Demo
 
-> Демо-проект на Unity, показывающий как **подменять ресурсы без обновления клиента** с помощью Addressables.  
-> Клиент — WebGL на **itch.io**, ассет-бандлы и каталоги — в **Yandex Object Storage**.
-
-![UI Demo](Docs/gifs/demo-ui.gif)
+![Demo](Docs/gifs/Recording_02.gif)
 
 ---
 
-## Оглавление
-- [Особенности](#особенности)
-- [Скриншоты / GIF](#скриншоты--gif)
-- [Структура проекта](#структура-проекта)
-- [Требования](#требования)
-- [Быстрый старт](#быстрый-старт)
-- [Адресуемый контент и метки](#адресуемый-контент-и-метки)
-- [Сборка и выкладка Addressables](#сборка-и-выкладка-addressables)
-- [Хостинг в Yandex Cloud](#хостинг-в-yandex-cloud)
-- [Запуск клиента на itch.io](#запуск-клиента-на-itchio)
-- [Как добавить заменяемый ресурс](#как-добавить-заменяемый-ресурс)
-- [Поведение в рантайме](#поведение-в-рантайме)
-- [Диагностика и лог в UI](#диагностика-и-лог-в-ui)
-- [Нюансы WebGL](#нюансы-webgl)
-- [Траблшутинг](#траблшутинг)
-- [Карта кода](#карта-кода)
-- [Лицензия](#лицензия)
+![Demo](Docs/gifs/Recording_01.gif)
 
 ---
 
@@ -33,18 +14,34 @@
 - Подмена **префабов/спрайтов** без обновления приложения.
 - Очистка кэша и **подтягивание нового каталога** на выход в главную сцену.
 - Встроенный **лог Addressables** в скролл-UI.
-- Совместимо с **itch.io** и **Yandex Object Storage**.
-
----
-
-## Скриншоты / GIF
-
-- UI ассетов и сцен — `Docs/gifs/demo-ui.gif`  
-- Процесс подмены ассета — `Docs/gifs/swap-flow.gif`  
-- Загрузка сцены с прогрессом — `Docs/gifs/scene-load.gif`  
-- Настройки Addressables/групп — `Docs/img/groups.png`  
-- Настройки бакета Yandex Cloud/CORS — `Docs/img/yandex-cloud.png`
 
 ---
 
 ## Структура проекта
+- _Project/
+  - Scenes/
+    - Main.unity
+    - Gameplay.unity
+  - Scripts/
+    - Gameplay/
+      - Addressables/
+        - Catalog/ (`AddressableKeyCatalog.cs`, `AllowedKeyFilter.cs`)
+        - Lists/ (`AssetKeyListProvider.cs`, `SceneKeyListProvider.cs`)
+        - Loading/ (`AddressablesAssetLoader.cs`, `AddressablesSceneLoader.cs`)
+        - Probing/ (`AssetTypeProbe.cs`)
+        - `AddressablesInitializer.cs`, `AddressablesBootstrap.cs`
+      - Core/ (`AddressableKeyNormalizer.cs`, `GroupNameKeys.cs`, `GroupNameKeyType.cs`)
+      - Diagnostics/ (`AddressablesDiagnostics.cs`)
+      - Flows/
+        - Asset/ (`AssetButtonsAvailabilityUpdater.cs`, `AssetSelectionPreviewFlow.cs`, `PrefabLoadAndPreview.cs`)
+        - Scene/ (`SceneLoadingFlow.cs`)
+      - Swap/ (`BaseSwapCoordinator.cs`, `PrefabSwapCoordinator.cs`, `SpriteSwapCoordinator.cs`, `SwappableAnchorBase.cs`, `SwappablePrefabAnchor.cs`, `SwappableSpriteAnchor.cs`)
+      - UI/
+        - Demo/ (`DemoLoaderView.cs`)
+        - Dropdown/ (`DropdownCaptionOverlay.cs`, `DropdownItemImageLayout.cs`, `DropdownItemImageSlotInstaller.cs`, `DropdownLoadedFlagPresenter.cs`, `DropdownOptionsPopulator.cs`, `SceneSelectionButtonGate.cs`)
+        - Preview/ (`AssetLivePreviewer.cs`, `GameObjectHierarchyLayerSetter.cs`, `PrefabPreviewRenderer.cs`, `PrefabPreviewSpinner.cs`, `PreviewLightPlacer.cs`, `PreviewPanelSwitcher.cs`, `RendererBoundsCalculator.cs`, `RenderTextureAllocator.cs`)
+        - Shared/ (`AddressablesDiagnosticsToUiBridge.cs`, `UILogScrollList.cs`, `UILogView.cs`, `ExitToMainSceneButton.cs`)
+    - Installers/
+       - `AddressablesInstaller.cs`
+
+---

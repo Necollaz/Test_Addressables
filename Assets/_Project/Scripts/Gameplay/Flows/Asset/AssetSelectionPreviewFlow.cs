@@ -76,6 +76,7 @@ public class AssetSelectionPreviewFlow
                 loadedPrefabIconImage.sprite = loadedPrefabIconSprite;
                 loadedPrefabIconImage.enabled = loadedPrefabIconSprite != null;
             }
+            
             return;
         }
 

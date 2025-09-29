@@ -4,11 +4,11 @@ using Zenject;
 
 public class SwappableSpriteAnchor : SwappableAnchorBase<Sprite>
 {
-    [Header("Target (любой):")]
+    [Header("Target:")]
     [SerializeField] private Image _uiImage;
     [SerializeField] private SpriteRenderer _spriteRenderer;
     
-    [Header("Base (опционально)")]
+    [Header("Base")]
     [SerializeField] private Sprite _baseSprite;
 
     private SpriteSwapCoordinator _coordinator;

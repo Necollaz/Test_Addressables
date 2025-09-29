@@ -53,8 +53,6 @@ public class PrefabPreviewRenderer : MonoBehaviour
         
         if (_previewLayer < 0)
         {
-            Debug.LogWarning("[Preview3D] Layer 'Preview3D' not found in build. Falling back to Default layer.");
-            
             _previewLayer = 0;
 
             if (_previewCamera != null)

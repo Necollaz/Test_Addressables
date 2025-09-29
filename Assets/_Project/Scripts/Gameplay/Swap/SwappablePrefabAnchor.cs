@@ -51,6 +51,7 @@ public class SwappablePrefabAnchor : SwappableAnchorBase<GameObject>
         if (_currentOverrideInstance != null)
         {
             Destroy(_currentOverrideInstance);
+            
             _currentOverrideInstance = null;
         }
 
@@ -60,10 +61,10 @@ public class SwappablePrefabAnchor : SwappableAnchorBase<GameObject>
         Transform parent = _spawnParent != null ? _spawnParent : transform;
         _currentOverrideInstance = Instantiate(prefab, parent, false);
 
-        var t = _currentOverrideInstance.transform;
-        t.localPosition = Vector3.zero;
-        t.localRotation = Quaternion.identity;
-        t.localScale = Vector3.one;
+        Transform transformInstance = _currentOverrideInstance.transform;
+        transformInstance.localPosition = Vector3.zero;
+        transformInstance.localRotation = Quaternion.identity;
+        transformInstance.localScale = Vector3.one;
 
         _currentOverrideInstance.name = $"{SlotId}_Override";
     }
@@ -73,6 +74,7 @@ public class SwappablePrefabAnchor : SwappableAnchorBase<GameObject>
         if (_currentOverrideInstance != null)
         {
             Destroy(_currentOverrideInstance);
+            
             _currentOverrideInstance = null;
         }
 

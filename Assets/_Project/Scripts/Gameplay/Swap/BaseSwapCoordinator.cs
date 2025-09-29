@@ -52,8 +52,10 @@ public abstract class BaseSwapCoordinator<TAnchor, TAsset>
     public void ResetAll()
     {
         foreach (var list in anchorsBySlot.Values)
+        {
             for (int i = 0; i < list.Count; i++)
                 list[i].ResetToBase();
+        }
 
         pendingBySlot.Clear();
     }

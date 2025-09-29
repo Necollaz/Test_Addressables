@@ -21,19 +21,12 @@ public class PrefabLoadAndPreview
 
     public async Task<bool> TryLoadAndShowAsync(string assetKey, object probeKey)
     {
-        Debug.Log($"[PrefabFlow] TryLoad '{assetKey}' (probeKey='{probeKey}')");
-
         long expectedBytes = await loader.GetExpectedDownloadBytesAsync(probeKey);
-        Debug.Log($"[PrefabFlow] Expected bytes: {expectedBytes}");
 
         if (expectedBytes > 0)
-        {
-            Debug.Log("[PrefabFlow] Downloading dependencies…");
             await loader.EnsureDependenciesDownloaded(probeKey);
-        }
 
         GameObject prefab = await loader.LoadAssetAsync<GameObject>(assetKey);
-        Debug.Log($"[PrefabFlow] LoadAsset status: {(prefab ? "OK" : "NULL")}");
 
         if (prefab == null)
             return false;
@@ -45,13 +38,9 @@ public class PrefabLoadAndPreview
         }
 
         if (alsoInstantiateIntoScene && sceneSpawnRoot != null)
-        {
             _spawnedInstance = Object.Instantiate(prefab, sceneSpawnRoot);
-            Debug.Log("[PrefabFlow] Spawned instance in scene");
-        }
 
         previewRenderer?.TryShowPrefab(prefab);
-        Debug.Log("[PrefabFlow] Sent to preview renderer");
 
         return true;
     }
@@ -66,6 +55,7 @@ public class PrefabLoadAndPreview
         }
         
         await loader.UnloadAllAssetsAsync();
+        
         previewRenderer?.Clear();
     }
 }
