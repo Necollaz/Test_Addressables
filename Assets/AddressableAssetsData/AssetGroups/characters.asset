@@ -20,20 +20,17 @@ MonoBehaviour:
   - m_GUID: 9644ad614be9b23468e1b8818d60ed2b
     m_Address: character/botPlayer/kv-2-green
     m_ReadOnly: 0
-    m_SerializedLabels:
-    - mutable_content
+    m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: c8d5c25ed1252f74f9239cebd0349956
     m_Address: character/botPlayer/kv-1-blue
     m_ReadOnly: 0
-    m_SerializedLabels:
-    - mutable_content
+    m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 5881c752343669748a1b3738a9861b7c
     m_Address: character/botPlayer/kv-2-red
     m_ReadOnly: 0
-    m_SerializedLabels:
-    - mutable_content
+    m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 609895fdfc5823743a4ae26c4b777f53, type: 2}
