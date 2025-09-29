@@ -20,38 +20,32 @@ MonoBehaviour:
   - m_GUID: f618c127d7efd2846a667089d5121ee4
     m_Address: effects/smoke/kv-01-black
     m_ReadOnly: 0
-    m_SerializedLabels:
-    - mutable_content
+    m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 133eb477f9bac6744b2bc07adc0e4b0c
     m_Address: effects/fire/kv-01
     m_ReadOnly: 0
-    m_SerializedLabels:
-    - mutable_content
+    m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 61f9d6d5d99a5114ba1b00cfa93070b4
     m_Address: effects/fire/kv-02-green
     m_ReadOnly: 0
-    m_SerializedLabels:
-    - mutable_content
+    m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 3e0cf131bfc8f5c41b16d5762dc60dfc
     m_Address: effects/fire/kv-03-blue
     m_ReadOnly: 0
-    m_SerializedLabels:
-    - mutable_content
+    m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 88f51b1f7fd625548a96435a852e04ab
     m_Address: effects/smoke/kv-02-green
     m_ReadOnly: 0
-    m_SerializedLabels:
-    - mutable_content
+    m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 8f0710b918ae6694e9d3424cf7b451ec
     m_Address: effects/smoke/kv-03-blue
     m_ReadOnly: 0
-    m_SerializedLabels:
-    - mutable_content
+    m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 609895fdfc5823743a4ae26c4b777f53, type: 2}

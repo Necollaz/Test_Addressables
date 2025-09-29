@@ -1,4 +1,12 @@
-# Addressables WebGL Demo
+# Unity Addressables Demo Project
+
+## 📌 О проекте
+Данный проект выполнен как тестовое задание.  
+Цель — продемонстрировать навыки работы с **Unity Addressables**, архитектурой загрузки ресурсов, обновляемым контентом и оптимизацией под WebGL.
+
+🎮 Билд доступен здесь: [itch.io ссылка](https://necollaz.itch.io/test)
+
+## 📸 GIF
 
 ![Demo](Docs/gifs/Recording_02.gif)
 
@@ -8,40 +16,46 @@
 
 ---
 
-## Особенности
+## ✅ Что реализовано
 
-- Отдельные списки **ассетов** и **сцен** в UI.
-- Подмена **префабов/спрайтов** без обновления приложения.
-- Очистка кэша и **подтягивание нового каталога** на выход в главную сцену.
-- Встроенный **лог Addressables** в скролл-UI.
+### Addressables структура
+- Настроены **2 профиля**: `Development` и `Production`
+- Ресурсы разделены на несколько **групп**:
+  - `UI`
+  - `Characters`
+  - `Buildings`
+  - `Effects`
+  - `Scenes`
+- Для каждой группы определены отдельные параметры:
+  - **Bundle Mode** (Pack Together / Pack Separately)
+  - **Compression** (LZ4)
 
----
+### Загрузка и выгрузка ресурсов
+- Загрузка **спрайтов, префабов, моделей** по ключу (async).
+- Асинхронная подгрузка **сцен через Addressables** с прогресс-баром.
+- После выхода из сцены — **выгрузка ненужных ассетов** и очистка памяти.
 
-## Структура проекта
-- _Project/
-  - Scenes/
-    - Main.unity
-    - Gameplay.unity
-  - Scripts/
-    - Gameplay/
-      - Addressables/
-        - Catalog/ (`AddressableKeyCatalog.cs`, `AllowedKeyFilter.cs`)
-        - Lists/ (`AssetKeyListProvider.cs`, `SceneKeyListProvider.cs`)
-        - Loading/ (`AddressablesAssetLoader.cs`, `AddressablesSceneLoader.cs`)
-        - Probing/ (`AssetTypeProbe.cs`)
-        - `AddressablesInitializer.cs`, `AddressablesBootstrap.cs`
-      - Core/ (`AddressableKeyNormalizer.cs`, `GroupNameKeys.cs`, `GroupNameKeyType.cs`)
-      - Diagnostics/ (`AddressablesDiagnostics.cs`)
-      - Flows/
-        - Asset/ (`AssetButtonsAvailabilityUpdater.cs`, `AssetSelectionPreviewFlow.cs`, `PrefabLoadAndPreview.cs`)
-        - Scene/ (`SceneLoadingFlow.cs`)
-      - Swap/ (`BaseSwapCoordinator.cs`, `PrefabSwapCoordinator.cs`, `SpriteSwapCoordinator.cs`, `SwappableAnchorBase.cs`, `SwappablePrefabAnchor.cs`, `SwappableSpriteAnchor.cs`)
-      - UI/
-        - Demo/ (`DemoLoaderView.cs`)
-        - Dropdown/ (`DropdownCaptionOverlay.cs`, `DropdownItemImageLayout.cs`, `DropdownItemImageSlotInstaller.cs`, `DropdownLoadedFlagPresenter.cs`, `DropdownOptionsPopulator.cs`, `SceneSelectionButtonGate.cs`)
-        - Preview/ (`AssetLivePreviewer.cs`, `GameObjectHierarchyLayerSetter.cs`, `PrefabPreviewRenderer.cs`, `PrefabPreviewSpinner.cs`, `PreviewLightPlacer.cs`, `PreviewPanelSwitcher.cs`, `RendererBoundsCalculator.cs`, `RenderTextureAllocator.cs`)
-        - Shared/ (`AddressablesDiagnosticsToUiBridge.cs`, `UILogScrollList.cs`, `UILogView.cs`, `ExitToMainSceneButton.cs`)
-    - Installers/
-       - `AddressablesInstaller.cs`
+### Обновляемый контент
+- Добавлен ресурс с лейблом **`mutable_content`**  
+  → его можно заменить на сервере без релиза клиента.
+- При повторном запуске проекта клиент подгружает **новый ресурс с CDN**.
+
+### Оптимизация загрузки
+- В консоль выводится:
+  - размер загружаемых бандлов,
+  - время загрузки каждого ассета.
+- Логирование **всех реально загруженных ключей**.
+- UI-лог (вывод в ScrollView).
+- Поддержка **Addressables Diagnostics**.
+
+### Архитектура
+- Используется **Zenject DI** (Installer для Addressables).
+- Весь код разделён на модули:
+  - `Addressables/Loading` — загрузка ассетов и сцен,
+  - `Addressables/Diagnostics` — логирование,
+  - `Swap/` — система подмены спрайтов и префабов,
+  - `UI/Demo` — демонстрационный UI для загрузки/выгрузки,
+  - `Preview/` — предпросмотр ассетов (Sprite/Prefab/Scene).
+- Асинхронность реализована через **async/await**.
 
 ---
