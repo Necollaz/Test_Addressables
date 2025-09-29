@@ -1,0 +1,43 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: characters
+  m_EditorClassIdentifier: 
+  m_GroupName: characters
+  m_Data:
+    m_SerializedData: []
+  m_GUID: fbfd1cd09eaf7ff499099c6bda438af0
+  m_SerializeEntries:
+  - m_GUID: 9644ad614be9b23468e1b8818d60ed2b
+    m_Address: character/botPlayer/kv-2-green
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - mutable_content
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c8d5c25ed1252f74f9239cebd0349956
+    m_Address: character/botPlayer/kv-1-blue
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - mutable_content
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5881c752343669748a1b3738a9861b7c
+    m_Address: character/botPlayer/kv-2-red
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - mutable_content
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 609895fdfc5823743a4ae26c4b777f53, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: e4c6318f7525ba240b9578a95641ccf3, type: 2}
+    - {fileID: 11400000, guid: 9ce6576338999d9468c34b1c40d3ee23, type: 2}

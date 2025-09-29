@@ -1,0 +1,115 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: buildings
+  m_EditorClassIdentifier: 
+  m_GroupName: buildings
+  m_Data:
+    m_SerializedData: []
+  m_GUID: 053d68386b5877a42a996f20e3fdf0fe
+  m_SerializeEntries:
+  - m_GUID: d35c5dcf55a6d1842972fbeb01077602
+    m_Address: buildings/base/kv-01-blue
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - mutable_content
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 04d2f7eec9f120f4ba7cd984d21f6774
+    m_Address: buildings/base/kv-03-red
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - mutable_content
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 94d7a9f33d39dd44894c86803153e62c
+    m_Address: buildings/base/kv-02-green
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - mutable_content
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0c01b05242c0fc64dab522689f0f17b3
+    m_Address: buildings/factory/kv-01-blue
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - mutable_content
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2a2bf0bd89a010846b9f6ca2dbe17852
+    m_Address: buildings/headquarters/kv-01-blue
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - mutable_content
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8a5e58448751f594aaf2970c552244af
+    m_Address: buildings/headquarters/kv-02-green
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - mutable_content
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6d313af3cd23f3d49a3326d8266fb6d5
+    m_Address: buildings/factory/kv-02-green
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - mutable_content
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f45f75438d0e4e54c983757e010f27e9
+    m_Address: buildings/factory/kv-03-red
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - mutable_content
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9dc62baf55f82b14bb50280a40ca1867
+    m_Address: buildings/headquarters/kv-03-red
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - mutable_content
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1bc6772d4b3673c4e89f9932c71e9a73
+    m_Address: buildings/powerPlant/kv-01-blue
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - mutable_content
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: be05e7e520600e04b90c3255c242dcde
+    m_Address: buildings/powerPlant/kv-02-green
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - mutable_content
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 43b07fb415be05641a6ba774077082a8
+    m_Address: buildings/powerPlant/kv-03-red
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - mutable_content
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 89b754a1a3a6681478c0dc7b788d795d
+    m_Address: buildings/storage/kv-01-blue
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - mutable_content
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d288ec31b2ef6bc45b6e7502c49f4c36
+    m_Address: buildings/storage/kv-02-green
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - mutable_content
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2ae935f873127d04280a19b1f5a4d9e5
+    m_Address: buildings/storage/kv-03-red
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - mutable_content
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 609895fdfc5823743a4ae26c4b777f53, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 608db4448493a0b4393755deccbf7adb, type: 2}
+    - {fileID: 11400000, guid: 825fded9c51f9e440bc0d52c480b93f1, type: 2}

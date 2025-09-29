@@ -1,0 +1,61 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: effects
+  m_EditorClassIdentifier: 
+  m_GroupName: effects
+  m_Data:
+    m_SerializedData: []
+  m_GUID: a547a63440108f8499f4fc40eb519f76
+  m_SerializeEntries:
+  - m_GUID: f618c127d7efd2846a667089d5121ee4
+    m_Address: effects/smoke/kv-01-black
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - mutable_content
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 133eb477f9bac6744b2bc07adc0e4b0c
+    m_Address: effects/fire/kv-01
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - mutable_content
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 61f9d6d5d99a5114ba1b00cfa93070b4
+    m_Address: effects/fire/kv-02-green
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - mutable_content
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3e0cf131bfc8f5c41b16d5762dc60dfc
+    m_Address: effects/fire/kv-03-blue
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - mutable_content
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 88f51b1f7fd625548a96435a852e04ab
+    m_Address: effects/smoke/kv-02-green
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - mutable_content
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8f0710b918ae6694e9d3424cf7b451ec
+    m_Address: effects/smoke/kv-03-blue
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - mutable_content
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 609895fdfc5823743a4ae26c4b777f53, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 28270266d83036b4fbf3dfae9f6361de, type: 2}
+    - {fileID: 11400000, guid: f1173db9597da3340b53e7561c085ddb, type: 2}

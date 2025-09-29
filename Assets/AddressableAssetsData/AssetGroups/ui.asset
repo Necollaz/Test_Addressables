@@ -1,0 +1,43 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: ui
+  m_EditorClassIdentifier: 
+  m_GroupName: ui
+  m_Data:
+    m_SerializedData: []
+  m_GUID: 4caa09406819d274d9df1b3da30ca05b
+  m_SerializeEntries:
+  - m_GUID: 2940a16c81b8672499d3a84e483c1846
+    m_Address: ui/poster/kv-1-green
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - mutable_content
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 67b30b85a83b1384e863fd51d840e06d
+    m_Address: ui/poster/kv-2-red
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - mutable_content
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 701db4cd75c198147be6610f83460c4f
+    m_Address: ui/poster/kv-3-blue
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - mutable_content
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 609895fdfc5823743a4ae26c4b777f53, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 1da53417e1d96bb4e8dd2b771ccb83d1, type: 2}
+    - {fileID: 11400000, guid: 1567fe5d01c8c9f49ad0a3d5db4f05df, type: 2}
