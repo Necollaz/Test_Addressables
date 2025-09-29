@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Reflection;
 using System.Text;
-using UnityEngine;
-using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement;
 using UnityEngine.ResourceManagement.AsyncOperations;
+using Debug = UnityEngine.Debug;
 
 public class AddressablesDiagnostics
 {
@@ -18,9 +18,16 @@ public class AddressablesDiagnostics
     private Action<AsyncOperationHandle, Exception> _previousExceptionHandler;
 
     private readonly StringBuilder sharedStringBuilder = new StringBuilder();
-    private readonly Dictionary<string, Stopwatch> stopwatchesByKey =
-        new System.Collections.Generic.Dictionary<string, Stopwatch>(256);
+    private readonly Dictionary<string, Stopwatch> stopwatchesByKey = new Dictionary<string, Stopwatch>(256);
 
+    private Type _collectorType;
+    private Type _eventType;
+    private MethodInfo _initializeMethod;
+    private PropertyInfo _profileEventsProp;
+    private MethodInfo _registerMethod;
+    private MethodInfo _unregisterMethod;
+    private Delegate _handlerDelegate;
+    
     private bool _enabled;
 
     public void Enable()
@@ -32,8 +39,6 @@ public class AddressablesDiagnostics
 
         _previousExceptionHandler = ResourceManager.ExceptionHandler;
         ResourceManager.ExceptionHandler = WrapExceptionHandler(_previousExceptionHandler);
-
-        Addressables.ResourceManager.RegisterDiagnosticCallback(HandleDiagnosticContext);
     }
 
     public void Disable()
@@ -45,8 +50,6 @@ public class AddressablesDiagnostics
 
         ResourceManager.ExceptionHandler = _previousExceptionHandler;
         _previousExceptionHandler = null;
-
-        Addressables.ResourceManager.UnregisterDiagnosticCallback(HandleDiagnosticContext);
 
         stopwatchesByKey.Clear();
     }
@@ -84,32 +87,17 @@ public class AddressablesDiagnostics
         if (string.IsNullOrEmpty(key))
             return;
 
-        if (stopwatchesByKey.TryGetValue(key, out var stopwatch))
-        {
-            if (stopwatch.IsRunning)
-                stopwatch.Stop();
-        }
+        if (stopwatchesByKey.TryGetValue(key, out Stopwatch stopwatch) && stopwatch.IsRunning)
+            stopwatch.Stop();
+        
+        sharedStringBuilder.Clear();
+        sharedStringBuilder.Append("[Addressables][Loaded] ").Append(key).Append(" | ms: ").Append(stopwatch?.ElapsedMilliseconds ?? 0);
+        
+        Debug.Log(sharedStringBuilder.ToString());
     }
 
     private Action<AsyncOperationHandle, Exception> WrapExceptionHandler(Action<AsyncOperationHandle, Exception> previousHandler)
     {
         return (handle, exception) => { previousHandler?.Invoke(handle, exception); };
-    }
-
-    private void HandleDiagnosticContext(ResourceManager.DiagnosticEventContext context)
-    {
-        if (context.Type != ResourceManager.DiagnosticEventType.AsyncOperationComplete)
-            return;
-
-        string displayName = context.OperationHandle.DebugName ?? "Unknown";
-
-        sharedStringBuilder.Clear();
-        sharedStringBuilder.Append("[Addressables][Complete] ");
-        sharedStringBuilder.Append(displayName);
-        sharedStringBuilder.Append(" | Id:").Append(context.EventValue);
-        sharedStringBuilder.Append(" | Frame:").Append(Time.frameCount);
-
-        if (context.Context != null)
-            sharedStringBuilder.Append(" | Ctx: ").Append(context.Context);
     }
 }

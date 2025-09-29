@@ -14,7 +14,9 @@ public class AssetLivePreviewer
     private readonly PreviewPanelSwitcher panelSwitcher;
     private readonly AddressableKeyNormalizer keyNormalizer;
     private readonly Image spritePreviewImage;
-
+    
+    private Texture2D _previewTextureCopy;
+    private Sprite _previewSpriteCopy;
     private AsyncOperationHandle? _currentPreviewHandle;
     private string _currentPreviewKey;
 
@@ -38,9 +40,6 @@ public class AssetLivePreviewer
             return;
         }
 
-        if (string.Equals(_currentPreviewKey, key, StringComparison.Ordinal))
-            return;
-
         ReleasePreviewIfAny();
 
         try
@@ -62,28 +61,24 @@ public class AssetLivePreviewer
             var handle = Addressables.LoadAssetAsync<Sprite>(key);
             await handle.Task;
             
-            if (handle.Status == AsyncOperationStatus.Succeeded)
+            if (handle.Status == AsyncOperationStatus.Succeeded && handle.Result != null)
             {
-                _currentPreviewHandle = handle;
-                _currentPreviewKey = key;
-
+                _previewSpriteCopy = MakeSpriteCopy(handle.Result, out _previewTextureCopy);
+                
                 if (spritePreviewImage != null)
                 {
                     ApplySpritePreviewSizing(key);
-                    spritePreviewImage.sprite = handle.Result;
-                    
+                    spritePreviewImage.sprite = _previewSpriteCopy;
+
                     if (!key.StartsWith(GroupNameKeys.KEY_GROUP_UI, StringComparison.OrdinalIgnoreCase))
                         spritePreviewImage.SetNativeSize();
                 }
 
                 panelSwitcher.TryShowSpriteOnly();
             }
-            else
-            {
-                Addressables.Release(handle);
-                panelSwitcher.TryHideAll();
-            }
 
+            Addressables.Release(handle);
+            
             return;
         }
 
@@ -92,21 +87,15 @@ public class AssetLivePreviewer
             var handle = Addressables.LoadAssetAsync<GameObject>(key);
             await handle.Task;
             
-            if (handle.Status == AsyncOperationStatus.Succeeded)
+            if (handle.Status == AsyncOperationStatus.Succeeded && handle.Result != null)
             {
-                _currentPreviewHandle = handle;
-                _currentPreviewKey = key;
-
                 prefabPreviewRenderer?.ApplyCameraOverrideForKey(key);
                 prefabPreviewRenderer?.TryShowPrefab(handle.Result);
                 panelSwitcher.TryShowPrefabOnly();
             }
-            else
-            {
-                Addressables.Release(handle);
-                panelSwitcher.TryHideAll();
-            }
 
+            Addressables.Release(handle);
+            
             return;
         }
         
@@ -115,16 +104,88 @@ public class AssetLivePreviewer
 
     public void ReleasePreviewIfAny()
     {
-        if (_currentPreviewHandle.HasValue)
-        {
-            var previewHandle = _currentPreviewHandle.Value;
+        prefabPreviewRenderer?.Clear();
+        
+        if (spritePreviewImage != null)
+            spritePreviewImage.sprite = null;
 
-            if (previewHandle.IsValid())
-                Addressables.Release(previewHandle);
+        if (_previewSpriteCopy != null)
+        {
+            UnityEngine.Object.Destroy(_previewSpriteCopy);
+            _previewSpriteCopy = null;
         }
 
-        _currentPreviewHandle = null;
-        _currentPreviewKey = null;
+        if (_previewTextureCopy != null)
+        {
+            UnityEngine.Object.Destroy(_previewTextureCopy);
+            _previewTextureCopy = null;
+        }
+    }
+    
+    private Sprite MakeSpriteCopy(Sprite sprite, out Texture2D textureCopy)
+    {
+        Texture2D texture = sprite.texture;
+        Rect rect = sprite.rect;
+        
+        if (texture.isReadable)
+        {
+            textureCopy = new Texture2D((int)rect.width, (int)rect.height, texture.format, false);
+            Color[] pixels = texture.GetPixels((int)rect.x, (int)rect.y, (int)rect.width, (int)rect.height);
+            
+            textureCopy.SetPixels(pixels);
+            textureCopy.Apply(false, false);
+        }
+        else
+        {
+            textureCopy = CopySubTexture(texture, rect);
+        }
+
+        Vector2 pivot = new Vector2(sprite.pivot.x / rect.width, sprite.pivot.y / rect.height);
+        Sprite copy = Sprite.Create(textureCopy, new Rect(0, 0, rect.width, rect.height), pivot, sprite.pixelsPerUnit, 0,
+            SpriteMeshType.Tight, sprite.border);
+        copy.name = $"{sprite.name}_PreviewCopy";
+        
+        return copy;
+    }
+    
+    private Texture2D CopySubTexture(Texture sourceTexture, Rect sourceRectanglePixels)
+    {
+        int targetWidth = Mathf.RoundToInt(sourceRectanglePixels.width);
+        int targetHeight = Mathf.RoundToInt(sourceRectanglePixels.height);
+        RenderTexture temporaryRenderTexture = RenderTexture.GetTemporary(targetWidth, targetHeight, 0,
+            RenderTextureFormat.ARGB32);
+        RenderTexture previousActiveRenderTexture = RenderTexture.active;
+
+        try
+        {
+            float uvX = sourceRectanglePixels.x / sourceTexture.width;
+            float uvY = sourceRectanglePixels.y / sourceTexture.height;
+            float uvWidth = sourceRectanglePixels.width / sourceTexture.width;
+            float uvHeight = sourceRectanglePixels.height / sourceTexture.height;
+
+            RenderTexture.active = temporaryRenderTexture;
+
+            GL.PushMatrix();
+            GL.LoadPixelMatrix(0, targetWidth, targetHeight, 0);
+            GL.Clear(true, true, new Color(0, 0, 0, 0));
+            
+            Rect destinationRectangle = new Rect(0, 0, targetWidth, targetHeight);
+            Rect uvRectangle = new Rect(uvX, uvY, uvWidth, uvHeight);
+
+            Graphics.DrawTexture(destinationRectangle, sourceTexture, uvRectangle, 0, 0, 0, 0);
+            GL.PopMatrix();
+            
+            Texture2D outputTexture = new Texture2D(targetWidth, targetHeight, TextureFormat.RGBA32, false, false);
+            outputTexture.ReadPixels(new Rect(0, 0, targetWidth, targetHeight), 0, 0, false);
+            outputTexture.Apply(false, false);
+
+            return outputTexture;
+        }
+        finally
+        {
+            RenderTexture.active = previousActiveRenderTexture;
+            RenderTexture.ReleaseTemporary(temporaryRenderTexture);
+        }
     }
 
     private void ApplySpritePreviewSizing(string key)

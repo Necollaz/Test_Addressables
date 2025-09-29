@@ -6,8 +6,11 @@ public class AddressablesInstaller : MonoInstaller
     {
         Container.Bind<AllowedKeyFilter>().FromMethod(_ => new AllowedKeyFilter(new []
             {
-                GroupNameKeys.KEY_GROUP_CHARACTERS, GroupNameKeys.KEY_GROUP_CHARACTER, GroupNameKeys.KEY_GROUP_UI,
-                GroupNameKeys.KEY_GROUP_BUILDINGS, GroupNameKeys.KEY_GROUP_EFFECTS, GroupNameKeys.KEY_GROUP_SCENES
+                GroupNameKeys.KEY_GROUP_CHARACTERS,
+                GroupNameKeys.KEY_GROUP_UI,
+                GroupNameKeys.KEY_GROUP_BUILDINGS,
+                GroupNameKeys.KEY_GROUP_EFFECTS,
+                GroupNameKeys.KEY_GROUP_SCENES
             })).AsSingle();
         
         Container.Bind<AddressableKeyNormalizer>().AsSingle();

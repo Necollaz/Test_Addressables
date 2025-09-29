@@ -35,17 +35,17 @@ public class DemoLoaderView : MonoBehaviour
     [SerializeField] private Image _assetItemLoadedPrototype;
     [SerializeField] private Image _sceneItemLoadedPrototype;
 
+    [Inject] private readonly AddressablesAssetLoader assetLoader;
+    [Inject] private readonly AddressablesSceneLoader sceneLoader;
+    [Inject] private readonly PrefabSwapCoordinator prefabSwapCoordinator;
+    [Inject] private readonly SpriteSwapCoordinator spriteSwapCoordinator;
+    [Inject] private readonly AddressableKeyNormalizer keyNormalizer;
+    [Inject] private readonly AddressablesInitializer initializer;
+    
     private readonly List<string> assetKeys = new List<string>(2048);
     private readonly List<string> sceneKeys = new List<string>(256);
     private readonly List<TMP_Dropdown.OptionData> assetOptions = new List<TMP_Dropdown.OptionData>(2048);
     private readonly List<TMP_Dropdown.OptionData> sceneOptions = new List<TMP_Dropdown.OptionData>(256);
-
-    [Inject] private AddressablesAssetLoader _assetLoader;
-    [Inject] private AddressablesSceneLoader _sceneLoader;
-    [Inject] private PrefabSwapCoordinator _prefabSwapCoordinator;
-    [Inject] private SpriteSwapCoordinator _spriteSwapCoordinator;
-    [Inject] private AddressableKeyNormalizer _keyNormalizer;
-    [Inject] private AddressablesInitializer _initializer;
 
     private AllowedKeyFilter _allowedKeyFilter;
     private AddressableKeyCatalog _keyCatalog;
@@ -69,21 +69,24 @@ public class DemoLoaderView : MonoBehaviour
     {
         _allowedKeyFilter = new AllowedKeyFilter(new[]
         {
-            GroupNameKeys.KEY_GROUP_CHARACTERS, GroupNameKeys.KEY_GROUP_CHARACTER, GroupNameKeys.KEY_GROUP_UI,
-            GroupNameKeys.KEY_GROUP_BUILDINGS, GroupNameKeys.KEY_GROUP_EFFECTS, GroupNameKeys.KEY_GROUP_SCENES
+            GroupNameKeys.KEY_GROUP_CHARACTERS,
+            GroupNameKeys.KEY_GROUP_UI,
+            GroupNameKeys.KEY_GROUP_BUILDINGS,
+            GroupNameKeys.KEY_GROUP_EFFECTS,
+            GroupNameKeys.KEY_GROUP_SCENES
         });
         _keyCatalog = new AddressableKeyCatalog(_allowedKeyFilter);
         _assetKeyListProvider = new AssetKeyListProvider(_keyCatalog);
         _sceneKeyListProvider = new SceneKeyListProvider();
         _typeProbe = new AssetTypeProbe(_allowedKeyFilter);
         _previewPanels = new PreviewPanelSwitcher(_spritePreviewImage, _gameObjectPreviewContainer, _prefabPreviewRenderer);
-        _prefabFlow = new PrefabLoadAndPreview(_assetLoader, _prefabPreviewRenderer, _spawnRootTransform, _alsoInstantiateIntoScene);
+        _prefabFlow = new PrefabLoadAndPreview(assetLoader, _prefabPreviewRenderer, _spawnRootTransform, _alsoInstantiateIntoScene);
         _optionsPopulator = new DropdownOptionsPopulator();
         _itemImageSlotInstaller = new DropdownItemImageSlotInstaller(new DropdownItemImageLayout(new Vector2(1f, 0.5f),
             new Vector2(1f, 0.5f), new Vector2(1f, 0.5f),8f));
         _loadedFlagPresenter = new DropdownLoadedFlagPresenter();
-        _buttonsAvailabilityUpdater = new AssetButtonsAvailabilityUpdater(_typeProbe, _loadSpriteButton, _loadPrefabButton, _keyNormalizer);
-        _livePreviewer = new AssetLivePreviewer(_typeProbe, _prefabPreviewRenderer, _previewPanels, _spritePreviewImage, _keyNormalizer);
+        _buttonsAvailabilityUpdater = new AssetButtonsAvailabilityUpdater(_typeProbe, _loadSpriteButton, _loadPrefabButton, keyNormalizer);
+        _livePreviewer = new AssetLivePreviewer(_typeProbe, _prefabPreviewRenderer, _previewPanels, _spritePreviewImage, keyNormalizer);
         _sceneSelectionGate = new SceneSelectionButtonGate();
         _assetCaptionOverlay = new DropdownCaptionOverlay(_assetItemLoadedPrototype, "ItemLoaded");
         _sceneCaptionOverlay = new DropdownCaptionOverlay(_sceneItemLoadedPrototype, "LoadedScene");
@@ -111,7 +114,7 @@ public class DemoLoaderView : MonoBehaviour
         if (_sceneKeyDropdown != null)
             _sceneKeyDropdown.onValueChanged.AddListener(OnSceneDropdownChanged);
 
-        await _initializer.RefreshCatalogIfNeeded(false);
+        await initializer.RefreshCatalogIfNeeded(false);
         await PopulateAssetDropdownAsync();
         await PopulateSceneDropdownAsync();
 
@@ -186,10 +189,10 @@ public class DemoLoaderView : MonoBehaviour
     {
         string key = GetAssetKeyByIndex(_assetKeyDropdown != null ? _assetKeyDropdown.value : -1);
 
-        await new AssetSelectionPreviewFlow(_allowedKeyFilter, _typeProbe, _keyNormalizer, _prefabFlow,
+        await new AssetSelectionPreviewFlow(_allowedKeyFilter, _typeProbe, keyNormalizer, _prefabFlow,
                 _prefabPreviewRenderer, _previewPanels, _spritePreviewImage)
-            .OnAssetKeySelectedAsync(key, _assetLoader, _loadedPrefabIconSprite, _loadedPrefabIconImage);
-        await _spriteSwapCoordinator.ApplyByAssetKey(key);
+            .OnAssetKeySelectedAsync(key, assetLoader, _loadedPrefabIconSprite, _loadedPrefabIconImage);
+        await spriteSwapCoordinator.ApplyByAssetKey(key);
         
         UpdateAssetLoadedOverlay();
     }
@@ -198,10 +201,10 @@ public class DemoLoaderView : MonoBehaviour
     {
         string key = GetAssetKeyByIndex(_assetKeyDropdown != null ? _assetKeyDropdown.value : -1);
 
-        await new AssetSelectionPreviewFlow(_allowedKeyFilter, _typeProbe, _keyNormalizer,
+        await new AssetSelectionPreviewFlow(_allowedKeyFilter, _typeProbe, keyNormalizer,
                 _prefabFlow, _prefabPreviewRenderer, _previewPanels, _spritePreviewImage)
-            .OnAssetKeySelectedAsync(key, _assetLoader, _loadedPrefabIconSprite, _loadedPrefabIconImage);
-        await _prefabSwapCoordinator.ApplyByAssetKey(key);
+            .OnAssetKeySelectedAsync(key, assetLoader, _loadedPrefabIconSprite, _loadedPrefabIconImage);
+        await prefabSwapCoordinator.ApplyByAssetKey(key);
         
         UpdateAssetLoadedOverlay();
     }
@@ -211,8 +214,8 @@ public class DemoLoaderView : MonoBehaviour
         await _prefabFlow.TryUnloadAllAsync();
         
         _previewPanels.TryHideAll();
-        _prefabSwapCoordinator.ResetAll();
-        _spriteSwapCoordinator.ResetAll();
+        prefabSwapCoordinator.ResetAll();
+        spriteSwapCoordinator.ResetAll();
 
         if (_loadedPrefabIconImage != null)
         {
@@ -231,9 +234,9 @@ public class DemoLoaderView : MonoBehaviour
         if (string.IsNullOrWhiteSpace(sceneKey))
             return;
         
-        string probeKey = _keyNormalizer.Normalize(sceneKey) as string ?? sceneKey;
+        string probeKey = keyNormalizer.Normalize(sceneKey) as string ?? sceneKey;
 
-        var sceneFlow = new SceneLoadingFlow(_sceneLoader, _sceneProgressSlider);
+        var sceneFlow = new SceneLoadingFlow(sceneLoader, _sceneProgressSlider);
 
         if (!await sceneFlow.IsSceneKeyAsync(probeKey))
         {
@@ -250,7 +253,7 @@ public class DemoLoaderView : MonoBehaviour
     
     private void UpdateAssetLoadedOverlay()
     {
-        if (_assetLoader == null)
+        if (assetLoader == null)
         {
             _assetCaptionOverlay.SetActive(false);
             
@@ -258,11 +261,11 @@ public class DemoLoaderView : MonoBehaviour
         }
 
         string selectedKey = GetAssetKeyByIndex(_assetKeyDropdown != null ? _assetKeyDropdown.value : -1);
-        bool isSelectedLoaded = !string.IsNullOrEmpty(selectedKey) && _assetLoader.LoadedAssetKeys != null &&
-                                _assetLoader.LoadedAssetKeys.Contains(selectedKey);
+        bool isSelectedLoaded = !string.IsNullOrEmpty(selectedKey) && assetLoader.LoadedAssetKeys != null &&
+                                assetLoader.LoadedAssetKeys.Contains(selectedKey);
 
         _assetCaptionOverlay.SetActive(isSelectedLoaded);
-        _loadedFlagPresenter.SyncItemIcons(_assetKeyDropdown, assetKeys, _assetLoader.LoadedAssetKeys,
+        _loadedFlagPresenter.SyncItemIcons(_assetKeyDropdown, assetKeys, assetLoader.LoadedAssetKeys,
             _assetItemLoadedPrototype != null ? _assetItemLoadedPrototype.sprite : null);
     }
 
