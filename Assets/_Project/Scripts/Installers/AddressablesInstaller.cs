@@ -20,6 +20,7 @@ public class AddressablesInstaller : MonoInstaller
         Container.Bind<AddressablesDiagnostics>().AsSingle();
         Container.Bind<AddressablesAssetLoader>().AsSingle();
         Container.Bind<AddressablesSceneLoader>().AsSingle();
+        Container.Bind<WebGLSafeSceneLoader>().AsSingle();
         Container.Bind<PrefabSwapCoordinator>().AsSingle();
         Container.Bind<SpriteSwapCoordinator>().AsSingle(); 
     }

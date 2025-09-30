@@ -41,6 +41,7 @@ public class DemoLoaderView : MonoBehaviour
     [Inject] private readonly SpriteSwapCoordinator spriteSwapCoordinator;
     [Inject] private readonly AddressableKeyNormalizer keyNormalizer;
     [Inject] private readonly AddressablesInitializer initializer;
+    [Inject] private readonly WebGLSafeSceneLoader safeSceneLoader;
     
     private readonly List<string> assetKeys = new List<string>(2048);
     private readonly List<string> sceneKeys = new List<string>(256);
@@ -236,7 +237,7 @@ public class DemoLoaderView : MonoBehaviour
         
         string probeKey = keyNormalizer.Normalize(sceneKey) as string ?? sceneKey;
 
-        var sceneFlow = new SceneLoadingFlow(sceneLoader, _sceneProgressSlider);
+        var sceneFlow = new SceneLoadingFlow(safeSceneLoader, _sceneProgressSlider);
 
         if (!await sceneFlow.IsSceneKeyAsync(probeKey))
         {

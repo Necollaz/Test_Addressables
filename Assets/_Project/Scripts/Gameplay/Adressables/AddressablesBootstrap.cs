@@ -15,6 +15,11 @@ public class AddressablesBootstrap : MonoBehaviour
         _diagnostics = diagnostics;
     }
     
+    private void Awake()
+    {
+        DontDestroyOnLoad(gameObject);
+    }
+    
     private async void Start()
     {
         _diagnostics?.Enable();
